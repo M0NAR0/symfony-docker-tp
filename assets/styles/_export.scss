@@ -1,0 +1,47 @@
+.purchaseOrder-export {
+
+    table {
+        width: 100%;
+    }
+
+    .purchaseOrder--header--row {
+        width: 100%;
+        border-collapse: collapse;
+
+        .purchaseOrder--header {
+
+            .purchaseOrder--header--left,
+            .purchaseOrder--header--right {
+                border: 4px solid #000000;
+                padding: 1rem;
+
+                table {
+                    margin: 0 auto;
+                    border-collapse: collapse;
+                }
+            }
+
+            .purchaseOrder--header--left {
+
+                td {
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .purchaseOrder--products {
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            th,
+            td {
+                border: 1px solid black;
+                padding: 1rem;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,102 @@
+{% extends 'base_export.html.twig' %}
+
+{% block title %}Bon de commande / Demande de prix{% endblock %}
+
+{% block body %}
+
+<main class="purchaseOrder-export">
+    <div>
+        <table class="purchaseOrder--header--row">
+            <tbody>
+                <tr class="purchaseOrder--header">
+                    <td class="purchaseOrder--header--left">
+                        <table>
+                            <tbody>
+                                <tr><td>SOCIETE PLAFITECH</td></tr>
+                                <tr><td>Z.A. Autoroutière</td></tr>
+                                <tr><td>Bd de la Communication</td></tr>
+                                <tr><td>53950 LOUVERNE</td></tr>
+                                <tr><td>TEL : 02 43 58 08 00</td></tr>
+                                <tr><td>FAX : 02 43 53 82 70</td></tr>
+                                <tr><td>Mail : accueil@plafitech.fr</td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td class="purchaseOrder--header--right">
+                        <table>
+                            <tbody>
+                                <tr><td>DESTINATAIRE :</td></tr>
+                                <tr><td>Société : {{ purchaseOrder.provider.providerCompanyName }}</td></tr>
+                                <tr><td>A l'attention de</td></tr>
+                                <tr><td>Monsieur : {% if purchaseOrder.provider.providerContactGenre %} {{ purchaseOrder.provider.providerContactFullname }} {% endif %}</td></tr>
+                                <tr><td>Madame : {% if not purchaseOrder.provider.providerContactGenre %} {{ purchaseOrder.provider.providerContactFullname }} {% endif %}</td></tr>
+                                <tr><td>Mail : {{ purchaseOrder.provider.providerEmail }}</td></tr>
+                                <tr><td>N° de télécopie : {{ purchaseOrder.provider.providerTel }}</td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr class="purchaseOrder--infos">
+                    <td>
+                        <table>
+                            <tbody>
+                                <tr><td>Louverné, le {{ purchaseOrder.purchOrderCreatedAt|format_datetime('short', 'none', locale='fr') }}</td></tr>
+                                <tr><td>Emetteur : {{ purchaseOrder.employee.employeeLastname }} {{ purchaseOrder.employee.employeeFirstname }}</td></tr>
+                                <tr><td>Affaire : {% if purchaseOrder.purchOrderAskedPrice %} DEMANDE DE PRIX {% else %} BON DE COMMANDE {% endif %}</td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="purchaseOrder--products">
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Désignation</th>
+                                    <th>Quantité</th>
+                                    <th>Dimensions</th>
+                                    <th>Prix unitaire</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for purchaseOrderProduct in purchaseOrder.purchaseOrderProducts %}
+                                <tr>
+                                    <td>{{ purchaseOrderProduct.product.productTitle }}</td>
+                                    <td>{{ purchaseOrderProduct.quantity }}</td>
+                                    <td>{{ purchaseOrderProduct.product.productDimension }}</td>
+                                    <td>{{ purchaseOrderProduct.product.productUnitaryPrice }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="purchaseOrder--infos">
+                    <td>
+                        <table>
+                            <tbody>
+                                <tr><td>Date de livraison : {{ purchaseOrder.purchOrderDeliveryDate|format_datetime('short', 'none', locale='fr') }}</td></tr>
+                                <tr><td>Lieu de livraison : {{ purchaseOrder.purchOrderDeliveryLocation }}</td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="purchaseOrder--pagesNumber">
+                    <td>
+                        <table>
+                            <tbody>
+                                <tr><td>Nombre de page(s) compris page de garde : {{ purchaseOrder.purchOrderNbPage }}</td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+{% endblock %}

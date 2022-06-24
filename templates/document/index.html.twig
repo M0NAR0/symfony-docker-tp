@@ -1,0 +1,280 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Document{% endblock %}
+
+{% block body %}
+
+{% if document is defined and site is defined %}
+    <div class="container">
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{{ path('site_detail', {'id': site.getSiteId }) }}">Retour</a>
+                </li>
+            </ol>
+        </nav>
+
+        <hr class="mb-4">
+
+        <!-- documents associés au chantier -->
+        <div class="album py-2 bg-light">
+            <div class="container">
+                <div class="row">
+                    <!-- Modal -->
+                    <div class="full-width">
+                        <div class="full-width">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">{{ document.getDocumentReference }}</h5>
+                                </div>
+
+                                <!-- Body document -->
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <h5 class="text-center text-danger">Il est strictement interdit de fumer dans les locaux occupés</h5>
+                                        <div class="col-md-4 m-auto">
+                                            <p class="text-center">
+                                                SAS <span class="text-warning">PLAF</span>I<span class="text-danger">TECH</span> <br/>
+                                                <span class="font-weight-bold">Responsable chantier :</span> <br/>
+                                                ZA Autoroutière <br/>
+                                                Bd de la Communication <br/>
+                                                <span class="font-weight-bold">{{ document.getEmployee.getEmployeeFirstname }} {{ document.getEmployee.getEmployeeLastname }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-2 ml-auto">
+                                            <p class="text-uppercase">N° FICHE {{ document.getDocumentId }}</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <label class="form-check-label text-danger font-weight-bold" for="acceptation_client">Acceptation client : </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="acceptation_client" {% if attributes.boolean.acceptation_client is defined and attributes.boolean.acceptation_client == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="text-center font-italic">{{ document.getDoctype.getDoctypeTitle }}</h3>
+
+                                    <!-- Informations client -->
+                                    <div class="container">
+                                        <h4 class="text-danger font-weight-bold">Description Chantier</h4>
+                                        <div class="row mb-3">
+                                            <div class="col-md-3">
+                                                <label class="form-check-label" for="neuf">Neuf : </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="neuf" {% if site.getSiteNeuf is defined and site.getSiteNeuf == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-check-label" for="renovation">Rénovation : </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="renovation" {% if site.getSiteRenovation is defined and site.getSiteRenovation == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4"><p>Coordonnées du client : </p></div>
+                                            <div class="col-md-4"><p>Nom : {{ site.getCustomer.getCustomerCompany }}</p></div>
+                                            <div class="col-md-4"><p>Personne à demander : {{ site.getCustomer.getCustomerContactName }}</p></div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-4"><p>Adresse : {{ site.getCustomer.getCustomerAddress }}</p></div>
+                                            <div class="col-md-4"><p>Ville : {{ site.getCustomer.getCustomerCity }}</p></div>
+                                            <div class="col-md-4"><p>Direction à suivre : {{ site.getCustomer.getCustomerContactName }}</p></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Informations chantier -->
+                                    <div class="container">
+                                        <h4 class="text-danger font-weight-bold">CARACTERISTIQUES CHANTIER</h4>
+                                        <div class="row">
+                                            <div class="col-md-4"><p>Date intervention : {% if attributes.date.date_intervention is defined %} {{ attributes.date.date_intervention|date('d/m/Y') }} {% endif %}</p></div>
+                                            <div class="col-md-4"><p>Equipe : {% if attributes.varchar.equipe is defined %} {{ attributes.varchar.equipe }} {% endif %}</p></div>
+                                            <div class="col-md-1"><p>Plans : </p></div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Oui </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.plan is defined and attributes.boolean.plan == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_non">Non </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_non" {% if attributes.boolean.plan is defined and attributes.boolean.plan == false %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">*</th>
+                                                    <th scope="col" class="font-weight-bold">Cloisons</th>
+                                                    <th scope="col">Hauteur</th>
+                                                    <th scope="col">Isolant</th>
+                                                    <th scope="col">*</th>
+                                                    <th scope="col" class="font-weight-bold">Doublages</th>
+                                                    <th scope="col">Hauteur</th>
+                                                    <th scope="col">Isolant</th>
+                                                    <th scope="col">*</th>
+                                                    <th scope="col" class="font-weight-bold">Plafond</th>
+                                                    <th scope="col">Hauteur</th>
+                                                    <th scope="col">Isolant</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                    <th scope="row">2</th>
+                                                    <td>Jacob</td>
+                                                    <td>Thornton</td>
+                                                    <td>@fat</td>
+                                                    <th scope="row">3</th>
+                                                    <td>Jacob</td>
+                                                    <td>Thornton</td>
+                                                    <td>@fat</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="container">
+                                        <h4 class="text-danger font-weight-bold">INFORMATIONS  COMPLEMENTAIRES</h4>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <p>Hauteur de travail : {% if attributes.int.hauteur_travail is defined %} {{ attributes.int.hauteur_travail }} mètre(s) {% endif %}</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Besoin échafaudage : </p>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Oui </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.besoin_echafaudage is defined and attributes.boolean.besoin_echafaudage == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Non </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.besoin_echafaudage is defined and attributes.boolean.besoin_echafaudage == false %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <p>Besoin intérimaire : </p>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Oui </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.besoin_interimaire is defined and attributes.boolean.besoin_interimaire == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Non </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.besoin_interimaire is defined and attributes.boolean.besoin_interimaire == false %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-6">
+                                                <p>Hauteur de échafaudage : {% if attributes.int.hauteur_echafaudage is defined %} {{ attributes.int.hauteur_echafaudage }} mètre(s) {% endif %}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <p>Livraison matériaux sur site : </p>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Oui </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.livraison_materiaux_site is defined and attributes.boolean.livraison_materiaux_site == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Non </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.livraison_materiaux_site is defined and attributes.boolean.livraison_materiaux_site == false %} {{ "checked" }} {% endif %}>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <p>Aire de stockage pour matériaux : </p>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Oui </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.aire_stockage_materiaux is defined and attributes.boolean.aire_stockage_materiaux == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Non </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.aire_stockage_materiaux is defined and attributes.boolean.aire_stockage_materiaux == false %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-5"></div>
+
+                                            <div class="col-md-3">
+                                                <p>Chantier fini le : {% if attributes.date.date_chantier_fini is defined %} {{ attributes.date.date_chantier_fini|date('d/m/Y') }} {% endif %}</p>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Oui </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.chantier_fini is defined and attributes.boolean.chantier_fini == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Non </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.chantier_fini is defined and attributes.boolean.chantier_fini == false %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <p>Copie bon de commande : </p>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Oui </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.copie_bon_commande is defined and attributes.boolean.copie_bon_commande == true %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="form-check-label" for="plan_yes">Non </label>
+                                                <input class="form-check-input ml-1 mr-0" type="checkbox" id="plan_yes" {% if attributes.boolean.copie_bon_commande is defined and attributes.boolean.copie_bon_commande == false %} {{ "checked" }} {% endif %}>
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p>Observations des compagnons : </p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <p>{% if attributes.varchar.observations_compagnons is defined %} {{ attributes.varchar.observations_compagnons }} {% endif %}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container p-4">
+                                    <div class="row table-bordered">
+                                        <div class="col-md-6">
+                                            <h6 class="text-danger font-weight-bold text-uppercase">Observations</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6 class="text-danger font-weight-bold">Matériaux à prendre à l’atelier</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row table-bordered">
+                                        <div class="col-md-6">
+                                            {% if attributes.varchar.observations is defined %} {{ attributes.varchar.observations }} {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {% if attributes.varchar.materiaux_a_prendre_a_atelier is defined %} {{ attributes.varchar.materiaux_a_prendre_a_atelier }} {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <a href="{{ path('document_export', {'id': document.getDocumentId }) }}" class="btn btn-primary">Télécharger PDF</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}
+

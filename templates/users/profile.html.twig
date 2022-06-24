@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+
+{% if (edit_employee_form is defined)
+    and
+    (profile.getRole.getRoleId == 1 or profile.getRole.getRoleId == 2)
+%}
+    <div class="container">
+        <div class="mb-3 text-center">
+            <img class="d-block mx-auto mb-3"
+                 src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg"
+                 alt="Logo plafitech" width="72" height="72">
+            <h2>Mon profil utilisateur</h2>
+            <p class="lead">{{ profile.getRole.getRoleTitle }}</p>
+        </div>
+
+        <!-- Alert Message -->
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                {% if success is defined %}<div class="alert alert-success" role="alert">{{ success }}</div>{% endif %}
+                {% if error is defined %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                {{ form_start(edit_employee_form) }}
+                <hr class="mb-4">
+
+                <h4 class="mb-3">Votre Profil</h4>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(edit_employee_form.employeeFirstname, {'attr': { 'class': 'form-control' } }) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(edit_employee_form.employeeLastname, {'attr': { 'class': 'form-control' } }) }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form_row(edit_employee_form.employeeAddress, {'attr': { 'class': 'form-control' } }) }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(edit_employee_form.employeeCity, {'attr': { 'class': 'form-control' } }) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(edit_employee_form.employeePostalCode, {'attr': { 'class': 'form-control' } }) }}
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <div class="text-center">
+                    <button class="btn btn-primary btn-block" type="submit"> Confirmer mon profil </button>
+                </div>
+
+                <div class="text-center pt-3">
+                    <a href="{{ path('admin') }}" class="btn btn-outline-secondary" type="submit"> Retour à l'accueil </a>                </div>
+                </div>
+
+                {{ form_rest(edit_employee_form) }}
+            </div>
+        </div>
+    </div>
+{% else %}
+    <main class="profile">
+        <div class="profile--information">
+            <p id="employee--lastname"><b>Nom:</b> {{ profile.employeeLastname }}</p><br>
+            <p id="employee--firstname"><b>Prénom:</b> {{ profile.employeeFirstname }}</p><br>
+            <p id="employee--role"><b>Rôle:</b> {{ employeeRoleTitle }}</p><br>
+            <p id="employee--genre"><b>Genre:</b> {% if profile.employeeGenre %} Masculin {% else %} Féminin {% endif %}</p><br>
+            <p id="employee--email"><b>Email:</b> {{ profile.email }}</p><br>
+            <p id="employee--address"><b>Adresse:</b> {{ profile.employeeAddress }}</p><br>
+            <p id="employee--city"><b>Ville:</b> {{ profile.employeeCity }}</p><br>
+            <p id="employee--postalCode"><b>Code postal:</b> {{ profile.employeePostalCode }}</p>
+        </div>
+    </main>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié{% endblock %}
+
+{% block body %}
+
+<main class="forgot_password">
+    <div class="forgot_password--wrap">
+        <h1>Demande de récupération de mot de passe</h1>
+
+        {{ form_start(form, {'name': 'forgot_password_form'}) }}
+        
+        <div class="field-wrap mb-3">
+            {{ form_row(form.message, {'attr': { 'class': 'form-control' } }) }}
+        </div>
+
+        <div class="field-wrap mb-3">
+            {{ form_row(form.save, {'attr': { 'class': 'form-control btn btn-lg btn-success btn-block' } }) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</main>
+
+{% endblock %}

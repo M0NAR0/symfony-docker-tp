@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossier Chantier{% endblock %}
+
+{% block body %}
+
+{% if site is defined %}
+    <section>
+        <div class="container text-center">
+            <div class="row">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <a href="{{ path('admin') }}">Retour</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <h1 class="mb-4">{{ site.getSiteTitle }}</h1>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-8 themed-grid-col">
+                    <ul class="list-group mb-3" style="text-align: left">
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">{{ site.getCustomer.getCustomerCompany }}</h6>
+                                <small class="text-muted">{{ site.getCustomer.getCustomerAddress }}, </small>
+                                <small class="text-muted">{{ site.getCustomer.getCustomerCity }}, </small>
+                                <small class="text-muted">{{ site.getCustomer.getCustomerPostalCode }}</small>
+                            </div>
+                            <span class="text-muted">{{ site.getSiteCreatedAt|date('d/m/Y') }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 themed-grid-col">
+                    <p>
+                        {% if site.getSiteNeuf == true %}
+                            <span class="badge badge-primary text-wrap" style="width: 8rem;">Neuf</span>
+                        {% endif %}
+
+                        {% if site.getSiteRenovation == true %}
+                            <span class="badge badge-primary text-wrap" style="width: 8rem;">Renovation</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <hr class="mb-4">
+
+            <!-- documents associés au chantier -->
+            <div class="album py-5 bg-light">
+                <div class="container">
+                    <div class="row">
+                        {% for document in site.getDocumentEntities %}
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="card-text">{{ document.getDoctype.getDoctypeTitle }}</h6>
+                                        <p class="card-text">{{ document.getDocumentReference }}</p>
+                                        <p class="text-muted">{{ document.getDocumentCreatedAt|date('d/m/Y') }}</p>
+                                        <div class="justify-content-between align-items-center">
+                                            <div class="btn-group p-2">
+                                                <!-- Button trigger modal -->
+                                                <a href="{{ path('document_index', {'id': document.getDocumentId }) }}"
+                                                    class="btn btn-sm btn-outline-secondary">Regarder</a>
+                                                <!-- Button edit document -->
+                                                <a href="{{ path('document_edit', {'id': document.getDocumentId }) }}"
+                                                   class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-body">
+                                    <!-- Button add new document -->
+                                    <a href="{{ path('document_add') }}"
+                                       class="btn btn-sm btn-outline-secondary">+</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+{% endif %}
+
+{% endblock %}
+
