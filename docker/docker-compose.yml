@@ -31,7 +31,7 @@ services:
       - dev
 
   app:
-    image: symfony_docker
+    image: m0nar0/symfony_docker
     ports:
       - 8080:80
     networks:
